@@ -16,6 +16,7 @@ type Props = {
 
 export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
+	const [locationIdsInView, setLocationIdsInView] = useState<number[]>([]);
 
 	const {data, fetchNextPage, hasNextPage, isFetchingNextPage, status} = useInfiniteQuery({
 		queryKey: ['locations', searchQuery.text, searchQuery.status],
@@ -31,6 +32,10 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 			fetchNextPage();
 		}
 	}, [fetchNextPage, hasNextPage, isFetchingNextPage, isScrolledToBottom]);
+
+	useEffect(() => {
+		console.log('locationIdsInView', locationIdsInView);
+	}, [locationIdsInView]);
 
 	const hasResults = (data?.pages?.[0].locations.length ?? 0) > 0;
 
@@ -68,7 +73,7 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 						<List>
 							{
 								data.pages.map((page, i) => (
-									<Locations key={i} locations={page.locations}/>
+									<Locations key={i} locations={page.locations} setLocationIdsInView={setLocationIdsInView}/>
 								))
 							}
 						</List>
