@@ -4,6 +4,7 @@ import Locations from './';
 test('Render table', async () => {
 	render(
 		<Locations
+			currentStatuses={[]}
 			locations={[{
 				locationId: 4026,
 				address: {
@@ -23,6 +24,7 @@ test('Render table', async () => {
 				public: false,
 				type: 'spirii',
 			}]}
+			setLocationIdsInView={jest.fn()}
 		/>
 	);
 

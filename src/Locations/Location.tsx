@@ -1,19 +1,22 @@
 import {type Dispatch, type SetStateAction, useEffect} from 'react';
+import type {Location, Status} from '../types.ts';
 import EvStationIcon from '@mui/icons-material/EvStation';
 import Grid2 from '@mui/material/Grid2';
 import ListItem from '@mui/material/ListItem';
-import type {Location} from '../types.ts';
 import LocationIcon from './LocationIcon.tsx';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
 import {useInView} from 'react-intersection-observer';
 
 type Props = {
+	currentStatus?: Status
 	location: Location
 	setLocationIdsInView: Dispatch<SetStateAction<number[]>>
 }
 
-export default function Location({location, setLocationIdsInView}: Props) {
+export default function Location({currentStatus, location, setLocationIdsInView}: Props) {
+	const status = currentStatus ?? location.status;
+
 	const {ref, inView} = useInView({
 		delay: 100,
 	});
@@ -32,11 +35,11 @@ export default function Location({location, setLocationIdsInView}: Props) {
 				<Grid2
 					alignContent="center"
 					bgcolor={
-						location.status === 'Available'
+						status === 'Available'
 							? 'success.main'
-							: location.status === 'In use'
+							: status === 'In use'
 								? 'warning.main'
-								: location.status === 'Suspended'
+								: status === 'Suspended'
 									? 'error.main'
 									: 'grey.700'
 					}
@@ -44,7 +47,7 @@ export default function Location({location, setLocationIdsInView}: Props) {
 					p={1}
 					size="auto"
 				>
-					<LocationIcon status={location.status}/>
+					<LocationIcon status={status}/>
 				</Grid2>
 				<Grid2 container direction="column" size="grow">
 					<Grid2><Typography variant="h4">{location.address.name}</Typography></Grid2>

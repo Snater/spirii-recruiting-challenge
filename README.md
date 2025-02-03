@@ -1,3 +1,5 @@
+> ⚠️ Please note there are new commits since submitting the challenge solution. The original solution commit is [076b16b](https://github.com/Snater/spirii-recruiting-challenge/tree/076b16b7f9a3a344385ad40085a87660714f4458).
+
 # Spirii Recruiting Challenge
 
 The application is implemented using:
@@ -10,6 +12,19 @@ The application is implemented using:
 
 ```
 npm i
+```
+
+### Updating location statuses per WebSocket
+
+For optionally updating the location statuses per WebSocket, a `.env` file needs to be created in the root for providing the WebSocket URL:
+```
+VITE_SOCKET_URL=<Your WebSocket URL>
+```
+The server will receive messages each containing an array of the location ids (`number[]`) currently visible in the viewport, and is supposed to send the `Status` indexed by location id for each of these locations:
+```
+type LocationStatuses = {
+  [k: number]: 'Available' | 'Suspended' | 'In use'
+}
 ```
 
 ## Running the application

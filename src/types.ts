@@ -40,3 +40,7 @@ export type SearchQuery = {
 	text: string
 	status?: Status
 }
+
+export type LocationStatuses = {
+	[k: number]: Status
+}

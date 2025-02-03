@@ -1,4 +1,6 @@
+import type {LocationStatuses, SearchQuery} from '../types';
 import {useEffect, useState} from 'react';
+import useWebSocket, {ReadyState} from 'react-use-websocket';
 import Alert from '@mui/material/Alert';
 import Locations from '../Locations';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -6,7 +8,6 @@ import Filter from '../Filter/Filter.tsx';
 import Grid2 from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import MockApi from '../MockApi';
-import type {SearchQuery} from '../types';
 import Typography from '@mui/material/Typography';
 import {useInfiniteQuery} from '@tanstack/react-query';
 
@@ -17,6 +18,12 @@ type Props = {
 export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
 	const [locationIdsInView, setLocationIdsInView] = useState<number[]>([]);
+
+	const {sendMessage, lastJsonMessage, readyState} = process.env.VITE_SOCKET_URL
+		// eslint-disable-next-line react-hooks/rules-of-hooks
+		? useWebSocket(process.env.VITE_SOCKET_URL)
+		: {sendMessage: () => null, lastJsonMessage: '', readyState: ReadyState.CLOSED};
+	const [currentStatuses, setCurrentStatuses] = useState<LocationStatuses>({});
 
 	const {data, fetchNextPage, hasNextPage, isFetchingNextPage, status} = useInfiniteQuery({
 		queryKey: ['locations', searchQuery.text, searchQuery.status],
@@ -34,10 +41,25 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 	}, [fetchNextPage, hasNextPage, isFetchingNextPage, isScrolledToBottom]);
 
 	useEffect(() => {
-		console.log('locationIdsInView', locationIdsInView);
-	}, [locationIdsInView]);
+		sendMessage(JSON.stringify(locationIdsInView));
+	}, [locationIdsInView, sendMessage]);
+
+	useEffect(() => {
+		if (lastJsonMessage) {
+			setCurrentStatuses(statuses => Object.assign({}, statuses, lastJsonMessage));
+		}
+	}, [lastJsonMessage]);
 
 	const hasResults = (data?.pages?.[0].locations.length ?? 0) > 0;
+
+	if (process.env.SOCKET_URL && readyState !== ReadyState.OPEN) {
+		return (
+			<>
+				Waiting for WebSocket connection
+				<CircularProgress aria-label="Loading more…" size="1em" sx={{ml: 1}}/>
+			</>
+		);
+	}
 
 	return (
 		<Grid2 container direction="column">
@@ -73,7 +95,12 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 						<List>
 							{
 								data.pages.map((page, i) => (
-									<Locations key={i} locations={page.locations} setLocationIdsInView={setLocationIdsInView}/>
+									<Locations
+										currentStatuses={currentStatuses}
+										key={i}
+										locations={page.locations}
+										setLocationIdsInView={setLocationIdsInView}
+									/>
 								))
 							}
 						</List>
