@@ -1,11 +1,12 @@
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {expect, test, vi} from 'vitest';
 import {render, screen, waitForElementToBeRemoved} from '@testing-library/react';
 import type {Location} from '../types';
 import LocationList from './';
 import MockApi from '../MockApi';
 import locations from '../MockApi/locations.json';
 
-jest
+vi
 	.spyOn(MockApi, 'fetchLocations')
 	.mockImplementation((_query, _status?, cursor = 0) => {
 		return new Promise(resolve => {

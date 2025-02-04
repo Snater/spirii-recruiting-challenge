@@ -1,3 +1,4 @@
+import {beforeAll, expect, test, vi} from 'vitest';
 import {render, screen} from '@testing-library/react';
 import {useEffect, useState} from 'react';
 import userEvent, {type UserEvent} from '@testing-library/user-event';
@@ -23,7 +24,7 @@ function MockWrapper({onChange}: {onChange: (searchQuery: SearchQuery) => void})
 }
 
 test('Type into input', async () => {
-	const handleChange = jest.fn();
+	const handleChange = vi.fn();
 	render(<MockWrapper onChange={handleChange}/>);
 
 	await user.type(screen.getByRole('textbox'), 'h');
@@ -33,7 +34,7 @@ test('Type into input', async () => {
 });
 
 test('Change select', async () => {
-	const handleChange = jest.fn();
+	const handleChange = vi.fn();
 	render(<MockWrapper onChange={handleChange}/>);
 
 	await user.click(screen.getByRole('combobox'));

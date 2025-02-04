@@ -6,7 +6,7 @@ The application is implemented using:
 - Vite (React framework, TypeScript variant)
 - TanStack Query
 - Material UI
-- Jest + React Testing Library
+- Vitest + React Testing Library
 
 ## Installation
 

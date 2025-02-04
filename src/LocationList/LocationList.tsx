@@ -19,9 +19,9 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
 	const [locationIdsInView, setLocationIdsInView] = useState<number[]>([]);
 
-	const {sendMessage, lastJsonMessage, readyState} = process.env.VITE_SOCKET_URL
+	const {sendMessage, lastJsonMessage, readyState} = import.meta.env.VITE_SOCKET_URL
 		// eslint-disable-next-line react-hooks/rules-of-hooks
-		? useWebSocket(process.env.VITE_SOCKET_URL)
+		? useWebSocket(import.meta.env.VITE_SOCKET_URL)
 		: {sendMessage: () => null, lastJsonMessage: '', readyState: ReadyState.CLOSED};
 	const [currentStatuses, setCurrentStatuses] = useState<LocationStatuses>({});
 
@@ -52,7 +52,7 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 
 	const hasResults = (data?.pages?.[0].locations.length ?? 0) > 0;
 
-	if (process.env.SOCKET_URL && readyState !== ReadyState.OPEN) {
+	if (import.meta.env.SOCKET_URL && readyState !== ReadyState.OPEN) {
 		return (
 			<>
 				Waiting for WebSocket connection

@@ -1,3 +1,4 @@
+import {expect, test, vi} from 'vitest';
 import {render, screen} from '@testing-library/react';
 import Locations from './';
 
@@ -24,7 +25,7 @@ test('Render table', async () => {
 				public: false,
 				type: 'spirii',
 			}]}
-			setLocationIdsInView={jest.fn()}
+			setLocationIdsInView={vi.fn()}
 		/>
 	);
 
