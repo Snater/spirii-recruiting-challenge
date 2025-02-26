@@ -1,4 +1,4 @@
-import {type Dispatch, type SetStateAction, useEffect} from 'react';
+import {type Dispatch, type SetStateAction} from 'react';
 import type {Location, Status} from '../types.ts';
 import EvStationIcon from '@mui/icons-material/EvStation';
 import Grid2 from '@mui/material/Grid2';
@@ -17,17 +17,15 @@ type Props = {
 export default function Location({currentStatus, location, setLocationIdsInView}: Props) {
 	const status = currentStatus ?? location.status;
 
-	const {ref, inView} = useInView({
-		delay: 100,
+	const {ref} = useInView({
+		onChange: (inView) => {
+			setLocationIdsInView(ids => {
+				return inView
+					? ids.concat([location.locationId])
+					: ids.filter(locationId => locationId !== location.locationId)
+			});
+		},
 	});
-
-	useEffect(() => {
-		setLocationIdsInView(ids => {
-			return inView
-				? ids.concat([location.locationId])
-				: ids.filter(locationId => locationId !== location.locationId)
-		});
-	}, [inView, location, setLocationIdsInView]);
 
 	return (
 		<ListItem ref={ref}>
