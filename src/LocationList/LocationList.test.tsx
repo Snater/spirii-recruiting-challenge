@@ -10,7 +10,10 @@ vi
 	.spyOn(MockApi, 'fetchLocations')
 	.mockImplementation((_query, _status?, cursor = 0) => {
 		return new Promise(resolve => {
-			resolve({locations: (locations as Location[]).slice(cursor, cursor + 5), nextCursor: cursor + 5})
+			resolve({
+				locations: (locations as Location[]).slice(cursor, cursor + 5),
+				nextCursor: cursor + 5,
+			})
 		})
 	});
 
@@ -26,7 +29,11 @@ test('Default rendering', async () => {
 
 test('Scrolled to bottom', async () => {
 	const queryClient = new QueryClient();
-	render(<QueryClientProvider client={queryClient}><LocationList isScrolledToBottom/></QueryClientProvider>);
+	render(
+		<QueryClientProvider client={queryClient}>
+			<LocationList isScrolledToBottom/>
+		</QueryClientProvider>
+	);
 
 	await waitForElementToBeRemoved(screen.getByLabelText('Loading…'));
 
