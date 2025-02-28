@@ -1,3 +1,5 @@
+import type {SendMessage} from 'react-use-websocket';
+
 export type CountryISO = 'DK' // ...
 
 export type Address = {
@@ -44,3 +46,5 @@ export type SearchQuery = {
 export type LocationStatuses = {
 	[k: number]: Status
 }
+
+export type SendMessageFn = SendMessage | (() => null)

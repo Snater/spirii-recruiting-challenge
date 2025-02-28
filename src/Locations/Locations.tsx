@@ -1,14 +1,20 @@
-import {type Dispatch, type SetStateAction, memo} from 'react';
-import type {Location, LocationStatuses} from '../types.ts';
+import type {Location, LocationStatuses, SendMessageFn} from '../types.ts';
+import {type MutableRefObject, memo} from 'react';
 import LocationComponent from './Location';
 
 type Props = {
 	currentStatuses: LocationStatuses
+	locationIdsInView: MutableRefObject<number[]>
 	locations: Location[]
-	setLocationIdsInView: Dispatch<SetStateAction<number[]>>
+	sendMessage: SendMessageFn
 }
 
-export default memo(function Locations({currentStatuses, locations, setLocationIdsInView}: Props) {
+export default memo(function Locations({
+	currentStatuses,
+	locationIdsInView,
+	locations,
+	sendMessage,
+}: Props) {
 	return (
 		<>
 			{
@@ -17,7 +23,8 @@ export default memo(function Locations({currentStatuses, locations, setLocationI
 						currentStatus={currentStatuses[location.locationId]}
 						key={location.locationId}
 						location={location}
-						setLocationIdsInView={setLocationIdsInView}
+						locationIdsInView={locationIdsInView}
+						sendMessage={sendMessage}
 					/>
 				))
 			}
@@ -39,7 +46,7 @@ export default memo(function Locations({currentStatuses, locations, setLocationI
 			// There is an updated status for a location.
 			(newProps.currentStatuses[locationId] && !oldProps.currentStatuses[locationId])
 			// The status of a location has changed.
-			|| (newProps.currentStatuses[locationId] !== oldProps.currentStatuses[locationId])
+			|| newProps.currentStatuses[locationId] !== oldProps.currentStatuses[locationId]
 		) {
 			return false;
 		}

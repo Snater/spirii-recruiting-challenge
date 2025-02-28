@@ -1,9 +1,9 @@
-import {type Dispatch, type SetStateAction} from 'react';
-import type {Location, Status} from '../types.ts';
+import type {Location, SendMessageFn, Status} from '../types.ts';
 import EvStationIcon from '@mui/icons-material/EvStation';
 import Grid2 from '@mui/material/Grid2';
 import ListItem from '@mui/material/ListItem';
 import LocationIcon from './LocationIcon.tsx';
+import {MutableRefObject} from 'react';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
 import {useInView} from 'react-intersection-observer';
@@ -11,19 +11,27 @@ import {useInView} from 'react-intersection-observer';
 type Props = {
 	currentStatus?: Status
 	location: Location
-	setLocationIdsInView: Dispatch<SetStateAction<number[]>>
+	locationIdsInView: MutableRefObject<number[]>
+	sendMessage: SendMessageFn
 }
 
-export default function Location({currentStatus, location, setLocationIdsInView}: Props) {
+export default function Location({
+	currentStatus,
+	location,
+	locationIdsInView,
+	sendMessage,
+}: Props) {
 	const status = currentStatus ?? location.status;
 
 	const {ref} = useInView({
 		onChange: (inView) => {
-			setLocationIdsInView(ids => {
-				return inView
-					? ids.concat([location.locationId])
-					: ids.filter(locationId => locationId !== location.locationId)
-			});
+			locationIdsInView.current = inView
+				? locationIdsInView.current.concat([location.locationId])
+				: locationIdsInView.current.filter(locationId => locationId !== location.locationId);
+
+			console.debug('Location ids in view', locationIdsInView);
+
+			sendMessage(JSON.stringify(locationIdsInView));
 		},
 	});
 

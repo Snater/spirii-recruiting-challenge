@@ -1,5 +1,5 @@
 import type {LocationStatuses, SearchQuery} from '../types';
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import Alert from '@mui/material/Alert';
 import Locations from '../Locations';
@@ -17,7 +17,7 @@ type Props = {
 
 export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
-	const [locationIdsInView, setLocationIdsInView] = useState<number[]>([]);
+	const locationIdsInView = useRef<number[]>([]);
 
 	const {sendMessage, lastJsonMessage, readyState} = import.meta.env.VITE_SOCKET_URL
 		// eslint-disable-next-line react-hooks/rules-of-hooks
@@ -39,10 +39,6 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 			fetchNextPage();
 		}
 	}, [fetchNextPage, hasNextPage, isFetchingNextPage, isScrolledToBottom]);
-
-	useEffect(() => {
-		sendMessage(JSON.stringify(locationIdsInView));
-	}, [locationIdsInView, sendMessage]);
 
 	useEffect(() => {
 		if (lastJsonMessage) {
@@ -98,8 +94,9 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 									<Locations
 										currentStatuses={currentStatuses}
 										key={i}
+										locationIdsInView={locationIdsInView}
 										locations={page.locations}
-										setLocationIdsInView={setLocationIdsInView}
+										sendMessage={sendMessage}
 									/>
 								))
 							}
