@@ -1,5 +1,3 @@
-> ⚠️ Please note there are new commits since submitting the challenge solution. The original solution commit is [076b16b](https://github.com/Snater/spirii-recruiting-challenge/tree/076b16b7f9a3a344385ad40085a87660714f4458).
-
 # Spirii Recruiting Challenge
 
 The application is implemented using:
@@ -30,7 +28,13 @@ type LocationStatuses = {
 ## Running the application
 
 ```
-npm start dev
+npm run dev
+```
+
+## Starting Storybook
+
+```
+npm run storybook
 ```
 
 ## Running tests
@@ -51,5 +55,4 @@ npm run test
 - Real-time status updates could be implemented using a WebSocket connection (i.e. per react-use-websocket) or HTTP/2 connection (i.e. using gRPC).
 - As an alternative to maintaining a persistent connection to the backend, the client could use short- oder long-polling. That having the disadvantage of not instantly reflecting any status update due to the interval between polling requests, the implementation effort is less since the polling would simply query a static REST API endpoint.
 - It would also be possible to use Server-Sent Events. However, since these are unidirectional, it is not possible for the client to dynamically update the locations which status updates should be received for. There would need to be a backend session keeping track of the filtered locations.
-- However, considering the list may contain thousands of items, it would be a sensible optimization to limit locations that should receive updates to the ones currently visible within the viewport. So, whenever the user scrolls, the locations which should be queried for updates are reevaluated according to the ones visible in the viewport, i.e. using the Intersection Observer API.
 - The implementation of this challenge is only a list. If there would be an actual map, it would be nice to pinpoint all (filtered) locations in the map. According to whatever pins are visible in the map (considering zoom etc.), these would need to also be considered for status updates. 
