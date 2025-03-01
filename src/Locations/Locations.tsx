@@ -1,20 +1,13 @@
-import type {Location, LocationStatuses, SendMessageFn} from '../types.ts';
-import {type MutableRefObject, memo} from 'react';
+import type {Location, LocationStatuses} from '../types.ts';
 import LocationComponent from './Location';
+import {memo} from 'react';
 
 type Props = {
 	currentStatuses: LocationStatuses
-	locationIdsInView: MutableRefObject<number[]>
 	locations: Location[]
-	sendMessage: SendMessageFn
 }
 
-export default memo(function Locations({
-	currentStatuses,
-	locationIdsInView,
-	locations,
-	sendMessage,
-}: Props) {
+export default memo(function Locations({currentStatuses, locations}: Props) {
 	return (
 		<>
 			{
@@ -23,8 +16,6 @@ export default memo(function Locations({
 						currentStatus={currentStatuses[location.locationId]}
 						key={location.locationId}
 						location={location}
-						locationIdsInView={locationIdsInView}
-						sendMessage={sendMessage}
 					/>
 				))
 			}

@@ -1,27 +1,22 @@
-import type {Location, SendMessageFn, Status} from '../types.ts';
+import type {Location, Status} from '../types.ts';
 import EvStationIcon from '@mui/icons-material/EvStation';
 import Grid2 from '@mui/material/Grid2';
 import ListItem from '@mui/material/ListItem';
 import LocationIcon from './LocationIcon.tsx';
-import {MutableRefObject} from 'react';
 import PlaceIcon from '@mui/icons-material/Place';
 import Typography from '@mui/material/Typography';
 import {useInView} from 'react-intersection-observer';
+import useWebSocketContext from '../WebSocketContext';
 
 type Props = {
 	currentStatus?: Status
 	location: Location
-	locationIdsInView: MutableRefObject<number[]>
-	sendMessage: SendMessageFn
 }
 
-export default function Location({
-	currentStatus,
-	location,
-	locationIdsInView,
-	sendMessage,
-}: Props) {
+export default function Location({currentStatus, location}: Props) {
 	const status = currentStatus ?? location.status;
+
+	const {locationIdsInView, sendMessage} = useWebSocketContext();
 
 	const {ref} = useInView({
 		onChange: (inView) => {

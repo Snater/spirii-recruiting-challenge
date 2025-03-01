@@ -4,6 +4,7 @@ import {render, screen, waitForElementToBeRemoved} from '@testing-library/react'
 import type {Location} from '../types';
 import LocationList from './';
 import MockApi from '../MockApi';
+import {WebSocketContextProvider} from '../WebSocketContext';
 import locations from '../MockApi/locations.json';
 
 vi
@@ -19,7 +20,13 @@ vi
 
 test('Default rendering', async () => {
 	const queryClient = new QueryClient();
-	render(<QueryClientProvider client={queryClient}><LocationList/></QueryClientProvider>);
+	render(
+		<QueryClientProvider client={queryClient}>
+			<WebSocketContextProvider>
+				<LocationList/>
+			</WebSocketContextProvider>
+		</QueryClientProvider>
+	);
 
 	await waitForElementToBeRemoved(screen.getByLabelText('Loading…'));
 
@@ -31,7 +38,9 @@ test('Scrolled to bottom', async () => {
 	const queryClient = new QueryClient();
 	render(
 		<QueryClientProvider client={queryClient}>
-			<LocationList isScrolledToBottom/>
+			<WebSocketContextProvider>
+				<LocationList isScrolledToBottom/>
+			</WebSocketContextProvider>
 		</QueryClientProvider>
 	);
 

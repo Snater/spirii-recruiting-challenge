@@ -2,6 +2,7 @@ import type {Meta, StoryObj} from '@storybook/react';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useCallback, useEffect, useState} from 'react';
 import LocationList from './LocationList.tsx';
+import {WebSocketContextProvider} from '../WebSocketContext';
 import {scrolledToBottom} from '../util';
 
 const queryClient = new QueryClient();
@@ -20,7 +21,9 @@ function Decorator() {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<LocationList isScrolledToBottom={isScrolledToBottom}/>
+			<WebSocketContextProvider>
+				<LocationList isScrolledToBottom={isScrolledToBottom}/>
+			</WebSocketContextProvider>
 		</QueryClientProvider>
 	)
 }

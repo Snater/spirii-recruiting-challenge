@@ -1,6 +1,5 @@
 import type {LocationStatuses, SearchQuery} from '../types';
-import {useEffect, useRef, useState} from 'react';
-import useWebSocket, {ReadyState} from 'react-use-websocket';
+import {useEffect, useState} from 'react';
 import Alert from '@mui/material/Alert';
 import Locations from '../Locations';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -9,7 +8,9 @@ import Grid2 from '@mui/material/Grid2';
 import List from '@mui/material/List';
 import MockApi from '../MockApi';
 import Typography from '@mui/material/Typography';
+import {ReadyState} from 'react-use-websocket';
 import {useInfiniteQuery} from '@tanstack/react-query';
+import useWebSocketContext from '../WebSocketContext';
 
 type Props = {
 	isScrolledToBottom?: boolean
@@ -17,12 +18,8 @@ type Props = {
 
 export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
-	const locationIdsInView = useRef<number[]>([]);
 
-	const {sendMessage, lastJsonMessage, readyState} = import.meta.env.VITE_SOCKET_URL
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		? useWebSocket(import.meta.env.VITE_SOCKET_URL)
-		: {sendMessage: () => null, lastJsonMessage: '', readyState: ReadyState.CLOSED};
+	const {lastJsonMessage, readyState} = useWebSocketContext();
 	const [currentStatuses, setCurrentStatuses] = useState<LocationStatuses>({});
 
 	const {data, fetchNextPage, hasNextPage, isFetchingNextPage, status} = useInfiniteQuery({
@@ -91,13 +88,7 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 						<List>
 							{
 								data.pages.map((page, i) => (
-									<Locations
-										currentStatuses={currentStatuses}
-										key={i}
-										locationIdsInView={locationIdsInView}
-										locations={page.locations}
-										sendMessage={sendMessage}
-									/>
+									<Locations currentStatuses={currentStatuses} key={i} locations={page.locations}/>
 								))
 							}
 						</List>
