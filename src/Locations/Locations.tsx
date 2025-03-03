@@ -7,7 +7,16 @@ type Props = {
 	locations: Location[]
 }
 
+/**
+ * `currentStatuses` may contain statuses not relevant for this batch of `locations`. Hence, the
+ * component is memoized to only re-render when `currentStatuses` contain updated status(es) for the
+ * `locations` rendered by the component. All other properties of the `locations` are considered
+ * static.
+ */
 export default memo(function Locations({currentStatuses, locations}: Props) {
+
+	console.debug('Rendering Locations component');
+
 	return (
 		<>
 			{
