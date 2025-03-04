@@ -38,9 +38,15 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 	}, [fetchNextPage, hasNextPage, isFetchingNextPage, isScrolledToBottom]);
 
 	useEffect(() => {
-		if (lastJsonMessage) {
-			setCurrentStatuses(statuses => Object.assign({}, statuses, lastJsonMessage));
+		if (!lastJsonMessage) {
+			return;
 		}
+
+		const newStatuses: LocationStatuses = Object.fromEntries(
+			lastJsonMessage.map(locationStatus => ([locationStatus.locationId, locationStatus.status]))
+		);
+
+		setCurrentStatuses(statuses => Object.assign({}, statuses, newStatuses));
 	}, [lastJsonMessage]);
 
 	const hasResults = (data?.pages?.[0].locations.length ?? 0) > 0;

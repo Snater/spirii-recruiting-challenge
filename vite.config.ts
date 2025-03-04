@@ -10,8 +10,11 @@ export default defineConfig({
 		coverage: {
 			exclude: [
 				'src/*.{ts,tsx}',
+				'src/**/*.stories.{ts,tsx}',
 				'src/**/index.{ts,tsx}',
 				'src/**/MockApi.{ts,tsx}',
+				'lib/**/*',
+				'server/**/*',
 				...coverageConfigDefaults.exclude,
 			],
 		},

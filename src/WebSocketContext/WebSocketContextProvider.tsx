@@ -1,6 +1,8 @@
 import {PropsWithChildren, useRef} from 'react';
-import useWebSocket, {ReadyState} from 'react-use-websocket';
+import {LocationStatuses} from '../../lib/schemas';
 import WebSocketContext from './WebSocketContext';
+import useWebSocket from 'react-use-websocket';
+import {z} from 'zod';
 
 type Props = PropsWithChildren<{
 	defaultLocationIdsInView?: number[]
@@ -12,10 +14,8 @@ export default function WebSocketContextProvider({
 }: Props) {
 	const locationIdsInView = useRef<number[]>(defaultLocationIdsInView);
 
-	const {sendMessage, lastJsonMessage, readyState} = import.meta.env.VITE_SOCKET_URL
-		// eslint-disable-next-line react-hooks/rules-of-hooks
-		? useWebSocket(import.meta.env.VITE_SOCKET_URL)
-		: {sendMessage: () => null, lastJsonMessage: '', readyState: ReadyState.CLOSED};
+	const {sendMessage, lastJsonMessage, readyState}
+		= useWebSocket<z.infer<typeof LocationStatuses> | undefined>(import.meta.env.VITE_SOCKET_URL);
 
 	return (
 		<WebSocketContext.Provider

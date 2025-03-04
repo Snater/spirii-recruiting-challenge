@@ -6,38 +6,42 @@ The application is implemented using:
 - Material UI
 - Vitest + React Testing Library
 
-## Installation
+## Server
+
+### Installation
+
+Install the server's package dependencies and run the server:
+```
+cd ./server
+npm i
+npm start
+```
+
+### Sending status updates
+
+Status updates may be sent by editing `./server/statuses.json`. Whenever a file change is registered, an update is sent via the WebSocket connection.
+
+## Client
+
+### Installation
 
 ```
 npm i
 ```
 
-### Updating location statuses per WebSocket
-
-For optionally updating the location statuses per WebSocket, a `.env` file needs to be created in the root for providing the WebSocket URL:
-```
-VITE_SOCKET_URL=<Your WebSocket URL>
-```
-The server will receive messages each containing an array of the location ids (`number[]`) currently visible in the viewport, and is supposed to send the `Status` indexed by location id for each of these locations:
-```
-type LocationStatuses = {
-  [k: number]: 'Available' | 'Suspended' | 'In use'
-}
-```
-
-## Running the application
+### Running the application
 
 ```
 npm run dev
 ```
 
-## Starting Storybook
+### Starting Storybook
 
 ```
 npm run storybook
 ```
 
-## Running tests
+### Running tests
 
 ```
 npm run test
