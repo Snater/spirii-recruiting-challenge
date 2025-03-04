@@ -8,6 +8,14 @@ import Typography from '@mui/material/Typography';
 import {useInView} from 'react-intersection-observer';
 import useWebSocketContext from '../WebSocketContext';
 
+function locationIdsMatching(locationIdsA: number[], locationIdsB: number[]) {
+	if (locationIdsA.length !== locationIdsB.length) {
+		return false;
+	}
+
+	return locationIdsA.every(locationId => locationIdsB.includes(locationId));
+}
+
 type Props = {
 	currentStatus?: Status
 	location: Location
@@ -20,13 +28,16 @@ export default function Location({currentStatus, location}: Props) {
 
 	const {ref} = useInView({
 		onChange: (inView) => {
+			const previousLocationIdsInView = locationIdsInView.current;
+
 			locationIdsInView.current = inView
 				? locationIdsInView.current.concat([location.locationId])
 				: locationIdsInView.current.filter(locationId => locationId !== location.locationId);
 
-			console.debug('Location ids in view', locationIdsInView);
-
-			sendMessage(JSON.stringify(locationIdsInView));
+			if (!locationIdsMatching(locationIdsInView.current, previousLocationIdsInView)) {
+				console.debug('Location ids in view', locationIdsInView);
+				sendMessage(JSON.stringify(locationIdsInView));
+			}
 		},
 	});
 
