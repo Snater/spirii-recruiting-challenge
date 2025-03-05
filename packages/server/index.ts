@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import * as fs from 'node:fs';
-import {LocationIds, LocationStatuses} from '../lib/schemas';
+import {LocationIds, LocationStatuses} from '../../lib/schemas';
 import {WebSocketServer} from 'ws';
 import {z} from 'zod';
 

@@ -1,51 +1,34 @@
 # Spirii Recruiting Challenge
 
-The application is implemented using:
-- Vite (React framework, TypeScript variant)
-- TanStack Query
-- Material UI
-- Vitest + React Testing Library
+This monorepo contains a client application and a backend application, the latter allowing to update location statuses per WebSocket connection.
 
-## Server
-
-### Installation
-
-Install the server's package dependencies and run the server:
-```
-cd ./server
-npm i
-npm start
-```
-
-### Sending status updates
-
-Status updates may be sent by editing `./server/statuses.json`. Whenever a file change is registered, an update is sent via the WebSocket connection.
-
-## Client
-
-### Installation
+## Installation
 
 ```
 npm i
 ```
 
-### Running the application
+## Running the application
 
 ```
 npm run dev
 ```
 
-### Starting Storybook
+## Starting Storybook
 
 ```
 npm run storybook
 ```
 
-### Running tests
+## Running tests
 
 ```
 npm run test
 ```
+
+## Sending status updates
+
+Status updates may be sent by editing `./packages/server/statuses.json`. Whenever a file change is registered with the JSON schema being valid, an update is sent via the WebSocket connection, if any of the location status updates are available for are currently visible in the viewport. (Since the list of locations can potentially contain a very large amount of locations, status updates are only issued for locations actually visible.)
 
 ## Implementation notes
 
@@ -56,7 +39,7 @@ npm run test
 
 ## Real-time status update considerations
 
-- Real-time status updates could be implemented using a WebSocket connection (i.e. per react-use-websocket) or HTTP/2 connection (i.e. using gRPC).
+- Real-time status updates can be implemented using a WebSocket connection (as done in this application) or HTTP/2 connection (i.e. using gRPC).
 - As an alternative to maintaining a persistent connection to the backend, the client could use short- oder long-polling. That having the disadvantage of not instantly reflecting any status update due to the interval between polling requests, the implementation effort is less since the polling would simply query a static REST API endpoint.
 - It would also be possible to use Server-Sent Events. However, since these are unidirectional, it is not possible for the client to dynamically update the locations which status updates should be received for. There would need to be a backend session keeping track of the filtered locations.
 - The implementation of this challenge is only a list. If there would be an actual map, it would be nice to pinpoint all (filtered) locations in the map. According to whatever pins are visible in the map (considering zoom etc.), these would need to also be considered for status updates. 

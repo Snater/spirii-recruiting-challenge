@@ -1,15 +1,8 @@
 {
+  "extends": "./tsconfig.base.json",
   "files": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
-  "compilerOptions": {
-    "allowImportingTsExtensions": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
-    "types": ["node", "jest", "@testing-library/jest-dom"],
-    "jsx": "react-jsx",
-    "strict": true
-  },
+    { "path": "./packages/client" },
+    { "path": "./packages/server" }
+  ]
 }

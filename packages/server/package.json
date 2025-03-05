@@ -1,5 +1,5 @@
 {
-  "name": "spirii-recruiting-challenge-server",
+  "name": "server",
   "version": "0.0.0",
   "main": "index.ts",
   "scripts": {
@@ -13,7 +13,6 @@
   },
   "devDependencies": {
     "@types/ws": "^8.5.14",
-    "tsx": "^4.19.3",
-    "typescript": "^5.8.2"
+    "tsx": "^4.19.3"
   }
 }

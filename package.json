@@ -1,39 +1,9 @@
 {
   "name": "spirii-recruiting-challenge",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "test": "vitest run --coverage",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.4.2",
-    "@mui/material": "^6.4.2",
-    "@tanstack/react-query": "^5.65.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-intersection-observer": "^9.15.1",
-    "react-use-websocket": "^4.12.0",
-    "zod": "^3.24.2"
-  },
+  "private": "true",
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.2.5",
     "@eslint/js": "^9.17.0",
-    "@storybook/addon-essentials": "^8.6.3",
-    "@storybook/addon-interactions": "^8.6.3",
-    "@storybook/addon-onboarding": "^8.6.3",
-    "@storybook/blocks": "^8.6.3",
-    "@storybook/react": "^8.6.3",
-    "@storybook/react-vite": "^8.6.3",
-    "@storybook/test": "^8.6.3",
     "@tanstack/eslint-plugin-query": "^5.65.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
@@ -43,21 +13,25 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "@vitest/coverage-v8": "^3.0.5",
+    "concurrently": "^9.1.2",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.16",
     "eslint-plugin-storybook": "^0.11.3",
     "globals": "^15.14.0",
     "jsdom": "^26.0.0",
-    "storybook": "^8.6.3",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
     "vite": "^6.0.5",
     "vitest": "^3.0.5"
   },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  }
+  "scripts": {
+    "dev": "concurrently \"cd packages/server && npm start\" \"cd packages/client && npm run dev\"",
+    "lint": "eslint .",
+    "test": "vitest run --coverage",
+    "storybook": "cd packages/client && storybook dev -p 6006"
+  },
+  "workspaces": [
+    "packages/*"
+  ]
 }
