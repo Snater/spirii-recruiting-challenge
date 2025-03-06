@@ -1,13 +1,15 @@
-import 'dotenv/config';
+import * as dotenv from 'dotenv';
 import * as fs from 'node:fs';
 import {LocationIds, LocationStatuses} from '../../lib/schemas';
 import {WebSocketServer} from 'ws';
 import {z} from 'zod';
 
+dotenv.config({path: '../../.env'});
+
 const wss = new WebSocketServer({
-	host: process.env.SERVER_HOST ?? '127.0.0.1',
-	path: process.env.SERVER_PATH ?? '/',
-	port: process.env.SERVER_PORT ? parseInt(process.env.SERVER_PORT) : 8080,
+	host: process.env.VITE_SERVER_HOST ?? '127.0.0.1',
+	path: process.env.VITE_SERVER_PATH ?? '/',
+	port: process.env.VITE_SERVER_PORT ? parseInt(process.env.VITE_SERVER_PORT) : 8080,
 }, () => {
 	console.log(`Started WebSocket server`);
 });

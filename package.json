@@ -26,7 +26,7 @@
     "vitest": "^3.0.5"
   },
   "scripts": {
-    "dev": "concurrently \"cd packages/server && npm start\" \"cd packages/client && npm run dev\"",
+    "start": "concurrently \"cd packages/server && npm start\" \"cd packages/client && npm run dev\"",
     "lint": "eslint .",
     "test": "vitest run --coverage",
     "storybook": "cd packages/client && storybook dev -p 6006"

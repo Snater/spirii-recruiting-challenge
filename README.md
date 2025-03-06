@@ -2,6 +2,10 @@
 
 This monorepo contains a client application and a backend application, the latter allowing to update location statuses per WebSocket connection.
 
+## Configuration
+
+The WebSocket server setup may be adjusted in the project root's `.env` file.
+
 ## Installation
 
 ```
@@ -11,7 +15,7 @@ npm i
 ## Running the application
 
 ```
-npm run dev
+npm start
 ```
 
 ## Starting Storybook

@@ -14,8 +14,16 @@ export default function WebSocketContextProvider({
 }: Props) {
 	const locationIdsInView = useRef<number[]>(defaultLocationIdsInView);
 
+	const host = import.meta.env.VITE_SERVER_HOST ?? '127.0.0.1';
+	const path = import.meta.env.VITE_SERVER_PATH ?? '/';
+	const port = !isNaN(parseInt(import.meta.env.VITE_SERVER_PORT))
+		? import.meta.env.VITE_SERVER_PORT
+		: '8080';
+
+	const webSocketUrl = `ws://${host}:${port}${path}`;
+
 	const {sendMessage, lastJsonMessage, readyState}
-		= useWebSocket<z.infer<typeof LocationStatuses> | undefined>(import.meta.env.VITE_SOCKET_URL);
+		= useWebSocket<z.infer<typeof LocationStatuses> | undefined>(webSocketUrl);
 
 	return (
 		<WebSocketContext.Provider
