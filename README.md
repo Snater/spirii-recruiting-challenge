@@ -1,6 +1,6 @@
 # Spirii Recruiting Challenge
 
-This monorepo contains a client application and a backend application, the latter allowing to update location statuses per WebSocket connection.
+This application fetches and renders charging point locations retrieved from a mock API according to the filters provided in the frontend. In addition to the client application, this monorepo contains a backend application allowing to update location statuses per WebSocket connection.
 
 ## Configuration
 
@@ -32,7 +32,7 @@ npm run test
 
 ## Sending status updates
 
-Status updates may be sent by editing `./packages/server/statuses.json`. Whenever a file change is registered with the JSON schema being valid, an update is sent via the WebSocket connection, if any of the location status updates are available for are currently visible in the viewport. (Since the list of locations can potentially contain a very large amount of locations, status updates are only issued for locations actually visible.)
+Status updates may be sent by editing `./packages/server/statuses.json`. Whenever a file change is registered with the JSON schema being valid, an update is sent via the WebSocket connection, if any of the location status updates concerns the locations currently visible in the viewport. (Since the list of locations can potentially contain a very large amount of locations, status updates are only issued for locations actually visible.)
 
 ## Implementation notes
 

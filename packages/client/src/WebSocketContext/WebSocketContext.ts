@@ -1,5 +1,5 @@
 import {type MutableRefObject, createContext} from 'react';
-import {LocationStatuses} from '../../../../lib/schemas';
+import {LocationStatuses} from 'schemas';
 import {ReadyState} from 'react-use-websocket';
 import type {SendMessageFn} from '../types.ts';
 import {z} from 'zod';

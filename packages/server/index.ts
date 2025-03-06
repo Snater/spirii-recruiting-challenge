@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv';
 import * as fs from 'node:fs';
-import {LocationIds, LocationStatuses} from '../../lib/schemas';
+import {LocationIds, LocationStatuses} from 'schemas';
 import {WebSocketServer} from 'ws';
 import {z} from 'zod';
 
@@ -51,6 +51,8 @@ wss.on('connection', ws => {
 
 		subscribedLocations.clear();
 		locationIds.current.forEach(locationId => subscribedLocations.add(locationId));
+
+		// TODO: Send location status update here in case there is a new status available.
 
 		console.debug('Subscribed to:', subscribedLocations);
 	});

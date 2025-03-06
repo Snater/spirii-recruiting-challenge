@@ -1,5 +1,5 @@
 import {PropsWithChildren, useRef} from 'react';
-import {LocationStatuses} from '../../../../lib/schemas';
+import {LocationStatuses} from 'schemas';
 import WebSocketContext from './WebSocketContext';
 import useWebSocket from 'react-use-websocket';
 import {z} from 'zod';
