@@ -17,7 +17,7 @@ export type Coordinates = {
 
 export type ConnectorType = 'sType2'
 
-export type Status = 'Available' | 'Suspended' | 'In use'
+export type Status = 'Available' | 'Suspended' | 'In use' | undefined
 
 export type Type = 'hubject' | 'spirii'
 

@@ -24,19 +24,27 @@ type Props = {
 export default function Location({currentStatus, location}: Props) {
 	const status = currentStatus ?? location.status;
 
-	const {locationIdsInView, sendMessage} = useWebSocketContext();
+	const {locationsInView, sendMessage} = useWebSocketContext();
 
 	const {ref} = useInView({
 		onChange: (inView) => {
-			const previousLocationIdsInView = locationIdsInView.current;
+			const previousLocationIdsInView = locationsInView.current.map(
+				locationInView => locationInView.locationId
+			);
 
-			locationIdsInView.current = inView
-				? locationIdsInView.current.concat([location.locationId])
-				: locationIdsInView.current.filter(locationId => locationId !== location.locationId);
+			locationsInView.current = inView
+				? locationsInView.current.concat([{locationId: location.locationId, status}])
+				: locationsInView.current.filter(
+					locationInView => locationInView.locationId !== location.locationId
+				);
 
-			if (!locationIdsMatching(locationIdsInView.current, previousLocationIdsInView)) {
-				console.debug('Location ids in view', locationIdsInView);
-				sendMessage(JSON.stringify(locationIdsInView));
+			const locationIdsInView = locationsInView.current.map(
+				locationInView => locationInView.locationId
+			);
+
+			if (!locationIdsMatching(locationIdsInView, previousLocationIdsInView)) {
+				console.debug('Location ids in view', locationsInView.current);
+				sendMessage(JSON.stringify(locationsInView.current));
 			}
 		},
 	});

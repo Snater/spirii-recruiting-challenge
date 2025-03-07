@@ -32,7 +32,7 @@ npm run test
 
 ## Sending status updates
 
-Status updates may be sent by editing `./packages/server/statuses.json`. Whenever a file change is registered with the JSON schema being valid, an update is sent via the WebSocket connection, if any of the location status updates concerns the locations currently visible in the viewport. (Since the list of locations can potentially contain a very large amount of locations, status updates are only issued for locations actually visible.)
+Status updates may be sent by editing `./packages/server/STATUSES.json`. Whenever a file change is registered with the JSON schema being valid, an update is sent via the WebSocket connection, if any of the location status updates concerns the locations currently visible in the viewport. (Since the list of locations can potentially contain a very large amount of locations, status updates are only issued for locations actually visible.)
 
 ## Implementation notes
 

@@ -19,7 +19,7 @@ type Props = {
 export default function LocationList({isScrolledToBottom = false}: Props) {
 	const [searchQuery, setSearchQuery] = useState<SearchQuery>({text: '', status: undefined});
 
-	const {lastJsonMessage, readyState} = useWebSocketContext();
+	const {locationStatusUpdates, readyState} = useWebSocketContext();
 	const [currentStatuses, setCurrentStatuses] = useState<LocationStatuses>({});
 
 	const {data, fetchNextPage, hasNextPage, isFetchingNextPage, status} = useInfiniteQuery({
@@ -38,16 +38,16 @@ export default function LocationList({isScrolledToBottom = false}: Props) {
 	}, [fetchNextPage, hasNextPage, isFetchingNextPage, isScrolledToBottom]);
 
 	useEffect(() => {
-		if (!lastJsonMessage) {
+		if (!locationStatusUpdates) {
 			return;
 		}
 
-		const newStatuses: LocationStatuses = Object.fromEntries(
-			lastJsonMessage.map(locationStatus => ([locationStatus.locationId, locationStatus.status]))
-		);
+		const newStatuses: LocationStatuses = Object.fromEntries(locationStatusUpdates.map(
+			locationStatus => ([locationStatus.locationId, locationStatus.status])
+		));
 
 		setCurrentStatuses(statuses => Object.assign({}, statuses, newStatuses));
-	}, [lastJsonMessage]);
+	}, [locationStatusUpdates]);
 
 	const hasResults = (data?.pages?.[0].locations.length ?? 0) > 0;
 

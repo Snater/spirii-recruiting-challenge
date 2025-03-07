@@ -5,14 +5,14 @@ import useWebSocket from 'react-use-websocket';
 import {z} from 'zod';
 
 type Props = PropsWithChildren<{
-	defaultLocationIdsInView?: number[]
+	defaultLocationIdsInView?: z.infer<typeof LocationStatuses>
 }>
 
 export default function WebSocketContextProvider({
 	children,
 	defaultLocationIdsInView = [],
 }: Props) {
-	const locationIdsInView = useRef<number[]>(defaultLocationIdsInView);
+	const locationsInView = useRef<z.infer<typeof LocationStatuses>>(defaultLocationIdsInView);
 
 	const host = import.meta.env.VITE_SERVER_HOST ?? '127.0.0.1';
 	const path = import.meta.env.VITE_SERVER_PATH ?? '/';
@@ -27,7 +27,12 @@ export default function WebSocketContextProvider({
 
 	return (
 		<WebSocketContext.Provider
-			value={{lastJsonMessage, locationIdsInView, readyState, sendMessage}}
+			value={{
+				locationStatusUpdates: lastJsonMessage,
+				locationsInView,
+				readyState,
+				sendMessage,
+			}}
 		>
 			{children}
 		</WebSocketContext.Provider>

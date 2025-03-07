@@ -5,8 +5,8 @@ import type {SendMessageFn} from '../types.ts';
 import {z} from 'zod';
 
 export interface WebSocketContextType {
-	lastJsonMessage?: z.infer<typeof LocationStatuses>
-	locationIdsInView: MutableRefObject<number[]>
+	locationStatusUpdates?: z.infer<typeof LocationStatuses>
+	locationsInView: MutableRefObject<z.infer<typeof LocationStatuses>>
 	sendMessage: SendMessageFn
 	readyState: ReadyState
 }
